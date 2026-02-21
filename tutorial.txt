@@ -1,0 +1,69 @@
+---
+
+## Tutorial flow (implemented)
+
+The runnable versions of these parts are in:
+- `tutorials/01_basic_rag.ipynb`
+- `tutorials/02_semantic_chunking.ipynb`
+- `tutorials/03_reranking.ipynb`
+- `tutorials/04_hybrid_search.ipynb`
+
+Each notebook has:
+- novice-friendly embedding and retrieval walkthroughs
+- score tables (`top-k`, similarity, and ranking changes)
+- diagrams for pipeline understanding
+
+---
+
+## Part 1: Basic RAG (Dense Retrieval Baseline)
+
+**What changes:** nothing yet, this is the baseline.
+
+**What you learn explicitly:**
+1. How text becomes embedding vectors
+2. How similarity scoring ranks chunks
+3. Why nearest-neighbor retrieval can miss critical policy exceptions
+
+**Example failure:**
+"What is the policy for working from another country?" can over-retrieve generic remote-work chunks instead of the international policy chunk.
+
+---
+
+## Part 2: Semantic Chunking
+
+**What changes:** chunking strategy only (`fixed` → `semantic`).
+
+**What you learn explicitly:**
+1. Why chunk boundaries matter
+2. How better chunk cohesion improves retrieval relevance
+3. How to compare against Part 1 with the same query set
+
+**Expected gain:** improved retrieval for questions where rules and exceptions must remain together.
+
+---
+
+## Part 3: Reranking
+
+**What changes:** add second-stage reranking after dense retrieval.
+
+**What you learn explicitly:**
+1. First-stage candidate generation vs second-stage precision ranking
+2. Before/after rank movement tables
+3. Quality-latency tradeoff from reranking
+
+**Expected gain:** better top-ranked context when initial vector search is fuzzy.
+
+---
+
+## Part 4: Hybrid Search
+
+**What changes:** combine dense retrieval with BM25 keyword retrieval using rank fusion.
+
+**What you learn explicitly:**
+1. Why exact token matching matters (e.g., `Form A-12`)
+2. How dense and keyword retrieval complement each other
+3. How fusion improves robustness on exact-term + semantic queries
+
+**Expected gain:** better handling of both precise identifiers and conceptual policy questions.
+
+---

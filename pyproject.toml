@@ -1,0 +1,39 @@
+[project]
+name = "all-things-rag"
+version = "0.1.0"
+description = "Four-part RAG tutorial pipeline with comparable retrieval variants"
+readme = "README.md"
+requires-python = "==3.11.13"
+dependencies = [
+  "openai>=1.64.0",
+  "chromadb>=0.5.23",
+  "numpy>=2.2.3",
+  "pandas>=2.2.3",
+  "rank-bm25>=0.2.2",
+  "sentence-transformers>=3.4.1",
+  "scikit-learn>=1.6.1",
+  "matplotlib>=3.10.0",
+  "seaborn>=0.13.2",
+  "jupyter>=1.1.1",
+  "python-dotenv>=1.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.9.7",
+  "pytest>=8.3.4"
+]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_tutorials"]
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
