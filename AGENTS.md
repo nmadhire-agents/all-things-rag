@@ -45,6 +45,7 @@ Do not introduce alternate package managers in docs unless explicitly requested.
   - `evaluation.py`: recall/mrr/latency/groundedness summary
   - `pipeline.py`: shared pipeline constructors and helpers
 - `tutorials/`: notebooks (01–05)
+- `tests/`: pytest unit tests mirroring every module in `src/rag_tutorials/`
 - `scripts/`: utility scripts (`generate_data.py`, `smoke_imports.py`)
 - `data/`: canonical handbook text + generated jsonl datasets
 - `artifacts/`: persisted local artifacts (e.g., Chroma)
@@ -105,6 +106,7 @@ After coding:
 - Run `uv sync` if dependencies changed
 - Run `uv lock` if dependency graph changed
 - Run `uv run python scripts/smoke_imports.py`
+- **If any logic in `src/rag_tutorials/` changed, add or update the corresponding tests in `tests/` and run `uv run pytest tests/ -q` — all tests must pass before the change is complete**
 - If notebook behavior changed, re-run affected notebook cells end-to-end
 - Update `README.md` and this file if workflow or architecture changed
 
@@ -113,12 +115,13 @@ After coding:
 1. Implement variant logic in `src/rag_tutorials` (not only notebook code).
 2. Add/extend retrieval function with same return shape (`RetrievalResult`).
 3. Reuse current evaluation harness (`evaluate_single`, `summarize`).
-4. Add a notebook (or section) with:
+4. **Add or update tests in `tests/` for every new or changed function.**
+5. Add a notebook (or section) with:
    - what changed vs prior tutorial
    - one novice retrieval trace
    - one quantitative comparison table
-5. Include variant in `tutorials/05_rag_comparison.ipynb` benchmark table.
-6. Update README run order and progression diagram if needed.
+6. Include variant in `tutorials/05_rag_comparison.ipynb` benchmark table.
+7. Update README run order and progression diagram if needed.
 
 ## 8) Known assumptions and constraints
 
@@ -139,5 +142,45 @@ After coding:
   - `uv run python scripts/generate_data.py`
 - Smoke-check imports and basic pipeline wiring:
   - `uv run python scripts/smoke_imports.py`
+- Run unit tests:
+  - `uv run pytest tests/ -q`
 - Open notebooks:
   - `uv run jupyter lab`
+
+## 11) Unit test contract
+
+Every module in `src/rag_tutorials/` has a corresponding test file in `tests/`:
+
+| Source module | Test file |
+|---|---|
+| `schema.py` | `tests/test_schema.py` |
+| `chunking.py` | `tests/test_chunking.py` |
+| `data_generation.py` | `tests/test_data_generation.py` |
+| `evaluation.py` | `tests/test_evaluation.py` |
+| `retrieval.py` | `tests/test_retrieval.py` |
+| `io_utils.py` | `tests/test_io_utils.py` |
+| `embeddings.py` | `tests/test_embeddings.py` |
+| `qa.py` | `tests/test_qa.py` |
+| `reranking.py` | `tests/test_reranking.py` |
+| `vector_store.py` | `tests/test_vector_store.py` |
+| `pipeline.py` | `tests/test_pipeline.py` |
+| `settings.py` | `tests/test_settings.py` |
+
+**Rules for tests:**
+
+- Tests run without an OpenAI API key. Any function that calls the OpenAI API or loads a
+  sentence-transformers model must be tested with mocked external calls
+  (`unittest.mock.patch`).
+- Tests that require file I/O use pytest's `tmp_path` fixture.
+- Tests for `vector_store.py` use a real (but temporary) Chroma `PersistentClient`
+  via `tmp_path` — no mocking of Chroma itself.
+- Shared fixtures (sample `Document`, `Chunk`, `QueryExample`, `RetrievalResult`)
+  live in `tests/conftest.py` and are reused across test files.
+- All tests must pass with `uv run pytest tests/ -q` before a PR is merged.
+
+**When logic changes, you must:**
+
+1. Locate the test file for the changed module (table above).
+2. Add a new test case covering the new or changed behaviour.
+3. Update any existing test cases whose expected outputs are affected.
+4. Run `uv run pytest tests/ -q` and confirm zero failures before committing.
