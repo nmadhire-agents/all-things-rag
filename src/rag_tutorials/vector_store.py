@@ -13,6 +13,17 @@ def build_chroma_collection(
     collection_name: str,
     persist_dir: str = "artifacts/chroma",
 ):
+    """Create (or replace) a persistent Chroma collection from chunk embeddings.
+
+    Args:
+        chunks: Chunk records to index.
+        embeddings: Embedding vectors aligned to chunks.
+        collection_name: Chroma collection name.
+        persist_dir: Local path for Chroma persistence.
+
+    Returns:
+        The created Chroma collection instance.
+    """
     Path(persist_dir).mkdir(parents=True, exist_ok=True)
     client = chromadb.PersistentClient(path=persist_dir)
     existing = {collection.name for collection in client.list_collections()}
@@ -34,6 +45,16 @@ def dense_search(
     query_embedding: list[float],
     top_k: int = 5,
 ) -> list[RetrievalResult]:
+    """Query a Chroma collection and map results to tutorial result schema.
+
+    Args:
+        collection: Chroma collection to query.
+        query_embedding: Embedded query vector.
+        top_k: Number of nearest chunks to return.
+
+    Returns:
+        Dense retrieval results with distance-derived relevance scores.
+    """
     response = collection.query(query_embeddings=[query_embedding], n_results=top_k)
 
     ids = response["ids"][0]

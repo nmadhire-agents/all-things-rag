@@ -93,6 +93,15 @@ Lost or stolen devices must be reported within one hour to security operations.
 
 
 def _remote_work_paragraph(company: str, office: str) -> str:
+    """Build a synthetic remote-work policy paragraph for one division.
+
+    Args:
+        company: Division label used in the policy text.
+        office: Home office anchor location included in the narrative.
+
+    Returns:
+        A single paragraph describing domestic remote-work expectations.
+    """
     return (
         f"{company} supports remote work from home, co-working spaces, or temporary locations within "
         f"the employee's home country. Employees should remain reachable during their assigned timezone "
@@ -101,6 +110,15 @@ def _remote_work_paragraph(company: str, office: str) -> str:
 
 
 def _international_work_paragraph(country: str, max_days: int) -> str:
+    """Build synthetic policy text for international remote-work limits.
+
+    Args:
+        country: Example destination country used in the text.
+        max_days: Allowed number of days before permit workflows are required.
+
+    Returns:
+        A paragraph describing day limits and approval requirements.
+    """
     return (
         f"Working from another country such as {country} is capped at {max_days} days per rolling 12 months "
         f"without a permit. Beyond this duration, employees must engage Global Mobility and obtain written "
@@ -109,6 +127,15 @@ def _international_work_paragraph(country: str, max_days: int) -> str:
 
 
 def _international_tax_paragraph(form_code: str, country: str) -> str:
+    """Build synthetic tax-compliance policy text for cross-border work.
+
+    Args:
+        form_code: Form identifier learners can query for exact-match behavior.
+        country: Example destination country used in policy wording.
+
+    Returns:
+        A paragraph describing tax-form triggers and risk checks.
+    """
     return (
         f"For cross-border assignments involving {country}, employees must submit Form {form_code} before "
         f"travel if expected presence exceeds 7 business days. The form triggers tax review for treaty, "
@@ -117,6 +144,14 @@ def _international_tax_paragraph(form_code: str, country: str) -> str:
 
 
 def _travel_approval_paragraph(country: str) -> str:
+    """Build synthetic travel-approval policy text for international trips.
+
+    Args:
+        country: Destination country included for realistic examples.
+
+    Returns:
+        A paragraph with lead-time and approval workflow rules.
+    """
     return (
         f"International travel requests to {country} must be entered 14 days before departure in the travel "
         f"portal. Manager approval is mandatory, and finance pre-approval is required if total spend exceeds "
@@ -125,6 +160,11 @@ def _travel_approval_paragraph(country: str) -> str:
 
 
 def _security_paragraph() -> str:
+    """Build synthetic security requirements for travel with customer data.
+
+    Returns:
+        A paragraph describing mandatory controls and incident response timing.
+    """
     return (
         "Employees handling customer data while traveling must use VPN, hardware-backed MFA, and encrypted "
         "storage. Public kiosk access is prohibited. Lost-device incidents must be reported within 1 hour."
@@ -132,11 +172,23 @@ def _security_paragraph() -> str:
 
 
 def parse_handbook_to_documents(handbook_text: str) -> list[Document]:
+    """Parse handbook markdown text into section-level document records.
+
+    The parser treats `##` headings as section boundaries and groups subsequent
+    lines into one `Document` per section.
+
+    Args:
+        handbook_text: Raw handbook markdown/plain-text content.
+
+    Returns:
+        A list of section-level `Document` objects used for chunking.
+    """
     documents: list[Document] = []
     current_section = ""
     section_lines: list[str] = []
 
     def _commit_section(section: str, lines: list[str]) -> None:
+        """Commit buffered lines into a section document when a boundary is hit."""
         if not section:
             return
         text = " ".join(line.strip() for line in lines if line.strip())
@@ -168,11 +220,33 @@ def parse_handbook_to_documents(handbook_text: str) -> list[Document]:
 
 
 def generate_documents(doc_count: int = 500, seed: int = 42) -> list[Document]:
+    """Generate canonical tutorial documents from the shared handbook text.
+
+    Args:
+        doc_count: Unused compatibility parameter kept for stable API.
+        seed: Unused compatibility parameter kept for stable API.
+
+    Returns:
+        Section-level `Document` objects parsed from `HANDBOOK_TEXT`.
+    """
     del doc_count, seed
     return parse_handbook_to_documents(HANDBOOK_TEXT)
 
 
 def generate_queries(documents: list[Document], query_count: int = 200, seed: int = 42) -> list[QueryExample]:
+    """Generate evaluation queries mapped to target sections/documents.
+
+    The generator rotates through section-specific templates and keeps labels
+    (`target_doc_id`, `target_section`) so variants can be compared fairly.
+
+    Args:
+        documents: Parsed handbook documents used as relevance targets.
+        query_count: Number of query examples to create.
+        seed: Random seed for deterministic target-document sampling.
+
+    Returns:
+        A list of `QueryExample` records for benchmarking and analysis.
+    """
     random.seed(seed)
     grouped: dict[str, list[Document]] = {section: [] for section in SECTIONS}
     for document in documents:
@@ -207,6 +281,13 @@ def generate_queries(documents: list[Document], query_count: int = 200, seed: in
 
 
 def save_dataset(documents: list[Document], queries: list[QueryExample], output_dir: str = "data") -> None:
+    """Persist generated documents and queries as JSONL files.
+
+    Args:
+        documents: Section-level document records to write.
+        queries: Query/evaluation records to write.
+        output_dir: Directory where dataset files should be stored.
+    """
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
 
@@ -222,6 +303,16 @@ def save_dataset(documents: list[Document], queries: list[QueryExample], output_
 
 
 def build_and_save_dataset(output_dir: str = "data", doc_count: int = 500, query_count: int = 200) -> None:
+    """Create all tutorial data artifacts in one call.
+
+    This writes the canonical handbook text and the derived JSONL datasets used
+    by all notebooks.
+
+    Args:
+        output_dir: Destination directory for handbook text and JSONL files.
+        doc_count: Compatibility argument passed through to document generation.
+        query_count: Number of query records to generate.
+    """
     root = Path(output_dir)
     root.mkdir(parents=True, exist_ok=True)
     (root / "handbook_manual.txt").write_text(HANDBOOK_TEXT, encoding="utf-8")

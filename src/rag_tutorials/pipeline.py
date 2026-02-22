@@ -11,6 +11,15 @@ from .vector_store import build_chroma_collection, dense_search
 
 
 def prepare_chunks(mode: str, handbook_path: str = "data/handbook_manual.txt") -> list[Chunk]:
+    """Load handbook documents and apply selected chunking strategy.
+
+    Args:
+        mode: Chunking mode, typically `fixed` or `semantic`.
+        handbook_path: Path to canonical handbook text input.
+
+    Returns:
+        Chunk records produced by the selected strategy.
+    """
     documents = load_handbook_documents(handbook_path)
     if mode == "semantic":
         return semantic_chunk_documents(documents)
@@ -18,6 +27,16 @@ def prepare_chunks(mode: str, handbook_path: str = "data/handbook_manual.txt") -
 
 
 def build_dense_retriever(chunks: list[Chunk], collection_name: str, embedding_model: str):
+    """Build a dense retriever callable backed by a Chroma collection.
+
+    Args:
+        chunks: Chunk records to index.
+        collection_name: Name for persisted Chroma collection.
+        embedding_model: OpenAI embedding model name.
+
+    Returns:
+        Tuple of `(retrieve_callable, embedding_matrix)`.
+    """
     vectors = embed_texts([chunk.text for chunk in chunks], model=embedding_model)
     collection = build_chroma_collection(
         chunks=chunks,
@@ -33,6 +52,15 @@ def build_dense_retriever(chunks: list[Chunk], collection_name: str, embedding_m
 
 
 def build_hybrid_retriever(chunks: list[Chunk], dense_retriever):
+    """Compose dense retrieval with BM25 and fuse via RRF.
+
+    Args:
+        chunks: Chunk records for keyword index construction.
+        dense_retriever: Callable first-pass dense retriever.
+
+    Returns:
+        Hybrid retrieval callable returning fused ranked results.
+    """
     bm25_index, corpus, chunk_ids = build_bm25(chunks)
 
     def retrieve(question: str, top_k: int = 5) -> list[RetrievalResult]:
@@ -44,6 +72,18 @@ def build_hybrid_retriever(chunks: list[Chunk], dense_retriever):
 
 
 def top_scores_preview(question: str, chunks: list[Chunk], vectors: np.ndarray, embedding_model: str, top_k: int = 5):
+    """Return top-scoring chunk previews for one query using cosine similarity.
+
+    Args:
+        question: Query string to inspect.
+        chunks: Chunk metadata aligned to `vectors`.
+        vectors: Chunk embedding matrix.
+        embedding_model: Embedding model used for query embedding.
+        top_k: Number of previews to return.
+
+    Returns:
+        Ranked dictionaries with chunk ids, scores, and text snippets.
+    """
     query_vector = embed_texts([question], model=embedding_model)[0]
     scores = cosine_similarity(query_vector, vectors)
     indices = np.argsort(scores)[::-1][:top_k]

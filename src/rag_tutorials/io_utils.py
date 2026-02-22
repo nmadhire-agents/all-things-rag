@@ -9,6 +9,14 @@ from .schema import Chunk, Document, QueryExample
 
 
 def _load_jsonl(path: str | Path) -> list[dict]:
+    """Load newline-delimited JSON records from disk.
+
+    Args:
+        path: File path to a JSONL file.
+
+    Returns:
+        A list of decoded JSON objects in file order.
+    """
     records: list[dict] = []
     with Path(path).open("r", encoding="utf-8") as file_handle:
         for line in file_handle:
@@ -17,19 +25,35 @@ def _load_jsonl(path: str | Path) -> list[dict]:
 
 
 def load_documents(path: str | Path = "data/documents.jsonl") -> list[Document]:
+    """Load section-level `Document` records from JSONL."""
     return [Document(**record) for record in _load_jsonl(path)]
 
 
 def load_handbook_documents(path: str | Path = "data/handbook_manual.txt") -> list[Document]:
+    """Load handbook text and parse it into section-level documents.
+
+    Args:
+        path: Path to canonical handbook text file.
+
+    Returns:
+        Parsed `Document` entries, one per handbook section.
+    """
     handbook_text = Path(path).read_text(encoding="utf-8")
     return parse_handbook_to_documents(handbook_text)
 
 
 def load_queries(path: str | Path = "data/queries.jsonl") -> list[QueryExample]:
+    """Load benchmark `QueryExample` records from JSONL."""
     return [QueryExample(**record) for record in _load_jsonl(path)]
 
 
 def save_chunks(chunks: list[Chunk], path: str | Path) -> None:
+    """Persist chunk objects to JSONL for inspection or reuse.
+
+    Args:
+        chunks: Chunk records to write.
+        path: Destination JSONL file path.
+    """
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
 
@@ -39,4 +63,5 @@ def save_chunks(chunks: list[Chunk], path: str | Path) -> None:
 
 
 def load_chunks(path: str | Path) -> list[Chunk]:
+    """Load chunk records from a JSONL file."""
     return [Chunk(**record) for record in _load_jsonl(path)]

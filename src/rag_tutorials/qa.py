@@ -4,10 +4,21 @@ from openai import OpenAI
 
 
 def build_context(chunks: list[str]) -> str:
+    """Format retrieved chunks into a numbered context block for prompting."""
     return "\n\n".join([f"Chunk {idx + 1}: {chunk}" for idx, chunk in enumerate(chunks)])
 
 
 def answer_with_context(question: str, context_chunks: list[str], model: str = "gpt-4.1-mini") -> str:
+    """Generate a grounded answer from retrieved context using an LLM.
+
+    Args:
+        question: User question.
+        context_chunks: Retrieved context passages.
+        model: Chat model used for answer generation.
+
+    Returns:
+        Model-generated answer text constrained by provided context.
+    """
     context_block = build_context(context_chunks)
     prompt = (
         "You are a policy assistant. Answer only from the provided context. "
