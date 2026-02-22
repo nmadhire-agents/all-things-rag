@@ -72,23 +72,63 @@ HANDBOOK_TEXT = """# Z-Tech Global Work Handbook
 Z-Tech encourages remote work from home, co-working spaces, or temporary domestic locations.
 Employees must stay reachable during assigned timezone hours and use approved managed devices.
 Public Wi-Fi usage is allowed only with corporate VPN enabled.
+Employees are responsible for confirming local workspace privacy when joining meetings that include customer data or personnel topics.
+Calendar availability must reflect working blocks, breaks, and approved out-of-office windows so cross-functional teams can plan handoffs.
+Managers may define team-specific overlap hours when projects involve coordination across offices in different time zones.
+Home-office expenses are reimbursable only for pre-approved categories listed in the internal procurement guide.
+Employees should review ergonomic setup guidance quarterly and complete the annual safety attestation in the HR portal.
+Temporary domestic work from a location outside the home office state may require payroll location review if extended beyond 30 days.
+Use of personal devices for source-code access is prohibited unless enrolled in mobile device management and approved by security.
+Teams handling regulated datasets must use approved screen-sharing controls that prevent accidental exposure during demos.
 
 ## International Work
 Working from another country is capped at 14 days in a rolling 12-month period without permit support.
 Beyond 14 days, employees must open a Global Mobility case and obtain HR, Legal, and Payroll approval.
 Violations can trigger immigration, payroll, and tax exposure.
+Employees must submit destination country, travel dates, host entity, and work purpose when opening the Global Mobility case.
+Approval decisions depend on role type, customer access level, and whether on-site activities include contract negotiation.
+Some countries require pre-travel right-to-work checks even for short stays under the 14-day cap.
+International work days are counted using local calendar dates at destination, not departure timezone timestamps.
+Repeated short trips to the same country can accumulate toward compliance thresholds and trigger additional review.
+Employees are responsible for carrying supporting approval documents while traveling in case local authorities request evidence.
+Managers should verify project plans include fallback coverage if approvals are denied or delayed near departure dates.
+Cross-border access to production systems may be limited by data residency rules, and engineering exceptions require sign-off.
 
 ## International Tax
 Employees traveling internationally may need Form A-12 before departure when cross-border work exceeds 7 business days.
 The tax team uses Form A-12 to assess treaty relief, withholding obligations, and permanent establishment risk.
+Form A-12 submissions should include expected activities, legal entity served, and client-facing responsibilities.
+Tax review may request manager confirmation when trip scope changes from internal meetings to external delivery work.
+If itinerary changes extend presence beyond the original estimate, employees must submit an updated Form A-12 addendum.
+Payroll withholding instructions from tax review are binding and must be followed before expense reimbursement is processed.
+Travelers must keep records of entry and exit dates, meeting purpose, and work location for annual compliance audits.
+Project leaders should avoid assigning revenue-recognition authority during travel without prior tax and legal assessment.
+Country-specific de minimis thresholds can differ, so prior approval in one jurisdiction does not imply approval in another.
+Failure to complete required tax steps may delay bonus payouts until compliance obligations are remediated.
 
 ## Travel Approval
 International travel requests must be submitted at least 14 days before departure in the travel portal.
 Manager approval is mandatory, and finance approval is required for total costs above 2,000 USD equivalent.
+Travel requests must include purpose, destination, estimated budget, and expected customer or partner interactions.
+Last-minute submissions may be rejected unless executive leadership marks the trip as business critical.
+Flights should follow preferred carrier guidance unless there is a documented cost or timing exception.
+Hotel selections must align with the corporate safety list and regional risk advisories.
+Visa processing times vary by destination, and employees should verify required documents before booking non-refundable travel.
+When finance approval is required, budget owners must confirm cost center coverage and project attribution.
+Conference travel requires agenda details and manager validation of expected outcomes before approval is granted.
+Travelers should complete the pre-departure checklist, including emergency contacts and destination-specific security briefings.
 
 ## Security
 Employees handling customer data while traveling must use VPN, hardware-backed MFA, and encrypted storage.
 Lost or stolen devices must be reported within one hour to security operations.
+Use of public charging stations is discouraged unless a data-blocking adapter is used.
+Sensitive files should remain in approved cloud repositories and not be copied to removable media.
+Employees must lock screens when stepping away from devices, even in private meeting rooms.
+Phishing-resistant MFA methods are required for admin actions performed outside trusted office networks.
+If customs inspection requires device access, employees should notify security as soon as legally permitted.
+Printing customer documents during travel is prohibited unless approved secure-print facilities are available.
+Incident reports must include location, timestamp, device type, and a short description of data potentially affected.
+Security operations may remotely disable access tokens during investigations and restore access after identity validation.
 """
 
 
