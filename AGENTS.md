@@ -101,6 +101,9 @@ During coding:
 - Keep changes scoped to requested behavior
 - Do not silently alter dataset schema without migration notes
 - Maintain deterministic defaults where possible (seeded generation)
+- **Do not use emoji characters** in any notebook cells, markdown, code comments, or documentation.
+  Use plain-text alternatives instead (e.g. "Yes"/"No" instead of checkmarks, "->" instead of arrow symbols,
+  "(slow)" instead of face emoji).  This rule applies to every file in the repository.
 
 After coding:
 - Run `uv sync` if dependencies changed
@@ -130,7 +133,36 @@ After coding:
 - Reranking uses local cross-encoder model from sentence-transformers.
 - Synthetic HR/international work policy data is used for continuity and reproducibility.
 
-## 9) Non-goals unless explicitly requested
+## 9) Content and style rules (mandatory for all generated content)
+
+These rules apply to every file touched by an agent or contributor: notebooks,
+markdown, code comments, README, and this file.
+
+### No emoji characters
+Do **not** use emoji in any content — not in notebook cells, markdown prose,
+code comments, variable names, or documentation.
+
+Use plain-text alternatives in all cases:
+
+| Instead of | Write |
+|------------|-------|
+| checkmark symbol (U+2713) | "Yes" |
+| cross symbol (U+2717) | "No" |
+| right-arrow symbol | "->" |
+| smiley / face emoji | describe in words |
+| any Unicode pictograph or emoji | describe in words |
+
+This rule exists because emoji render inconsistently across terminals, PDF exports,
+and screen readers, and they reduce the professional quality of the material.
+
+### No assumed knowledge
+Do not assume a concept is understood just because it appears earlier in the same
+notebook.  Every concept that a first-time learner might not know must be:
+1. Named and defined in plain English.
+2. Accompanied by a concrete example showing input and output.
+3. Linked forward/backward to related explanations when they exist.
+
+### No-goals unless explicitly requested
 
 - Replacing stack with unrelated frameworks
 - Introducing extra tutorials/pages/features not tied to the progression
