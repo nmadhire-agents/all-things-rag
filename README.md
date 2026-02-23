@@ -1,6 +1,7 @@
 # all-things-rag
 
-Hands-on, four-part RAG tutorial series with a continuous pipeline and measurable comparisons.
+Hands-on RAG and agent tutorial series with a continuous pipeline, measurable comparisons,
+and an agent extension that builds on top of the RAG foundation.
 
 ## What this repo provides
 
@@ -11,10 +12,15 @@ Hands-on, four-part RAG tutorial series with a continuous pipeline and measurabl
 	- keyword retrieval + hybrid fusion
 	- reranking
 	- answer generation + evaluation metrics
-- Four Jupyter tutorials in `tutorials/` with progressive changes from part 1 to part 4.
+	- agent loop (ReAct pattern)
+	- reflection and self-correction (Worker + Critic)
+	- state management (checkpoints and time travel)
+- Eight Jupyter tutorials in `tutorials/` with progressive changes from part 1 to part 8.
 - A common dataset and evaluation slice so differences are comparable across tutorials.
 
-## Tutorial progression (continuity from 1 to 4)
+## Tutorial progression
+
+### Part 1: RAG Fundamentals (Tutorials 1-5)
 
 ```mermaid
 flowchart LR
@@ -22,13 +28,26 @@ flowchart LR
 		T2[Tutorial 2\nSemantic Chunking]
 		T3[Tutorial 3\nTwo-Stage Retrieval + Reranking]
 		T4[Tutorial 4\nHybrid Retrieval Dense + BM25]
-		T1 --> T2 --> T3 --> T4
+		T5[Tutorial 5\nBenchmark All Four]
+		T1 --> T2 --> T3 --> T4 --> T5
 ```
 
-Each tutorial reuses the same:
+### Part 2: Agent Extension (Tutorials 6-8)
+
+```mermaid
+flowchart LR
+		T6[Tutorial 6\nReAct Agent]
+		T7[Tutorial 7\nReflection and Self-Correction]
+		T8[Tutorial 8\nState Management]
+		T6 --> T7 --> T8
+```
+
+Each RAG tutorial reuses the same:
 - domain scenario (international work policy)
 - canonical handbook text source and shared query set
 - evaluation dimensions: retrieval quality, groundedness proxy, latency
+
+The agent tutorials build on top of the RAG pipeline by wrapping retrieval as an agent tool.
 
 ### Why each tutorial exists (challenge-driven progression)
 
@@ -37,6 +56,9 @@ Each tutorial reuses the same:
 - **Tutorial 3 (reranking):** addresses misordered retrieval candidates that remain after chunking improvements.
 - **Tutorial 4 (hybrid retrieval):** addresses exact-term blind spots (for example form IDs/codes) not reliably handled by dense-only retrieval.
 - **Tutorial 5 (benchmark):** quantifies tradeoffs so model/architecture choices are based on measured outcomes, not intuition.
+- **Tutorial 6 (ReAct agent):** introduces the Reason + Act loop where the agent decides when and what to retrieve.
+- **Tutorial 7 (reflection):** adds a Critic agent that reviews Worker answers and sends feedback for revision.
+- **Tutorial 8 (state management):** adds checkpoints and time travel so agent runs can be paused, inspected, and rewound.
 
 ## Prerequisites
 
@@ -80,8 +102,13 @@ uv run jupyter lab
 - `tutorials/03_reranking.ipynb`
 - `tutorials/04_hybrid_search.ipynb`
 - `tutorials/05_rag_comparison.ipynb`
+- `tutorials/06_react_agent.ipynb`
+- `tutorials/07_reflection_agent.ipynb`
+- `tutorials/08_state_management.ipynb`
 
-`tutorials/05_rag_comparison.ipynb` runs all four variants side-by-side and outputs a single benchmark table + plots.
+`tutorials/05_rag_comparison.ipynb` runs all four RAG variants side-by-side and outputs a single benchmark table + plots.
+
+Tutorials 6-8 are the agent extension. They require Tutorials 1-5 for background on the RAG pipeline that the agent uses as a tool.
 
 ## Novice-friendly retrieval transparency
 
