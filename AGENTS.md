@@ -44,7 +44,8 @@ Do not introduce alternate package managers in docs unless explicitly requested.
   - `qa.py`: context-aware answer generation
   - `evaluation.py`: recall/mrr/latency/groundedness summary
   - `pipeline.py`: shared pipeline constructors and helpers
-- `tutorials/`: notebooks (01–05)
+  - `tracing.py`: OpenTelemetry TracerProvider setup, span wrappers for retrieval/generation, OpenInference attribute constants
+- `tutorials/`: notebooks (01-09)
 - `tests/`: pytest unit tests mirroring every module in `src/rag_tutorials/`
 - `scripts/`: utility scripts (`generate_data.py`, `smoke_imports.py`)
 - `data/`: canonical handbook text + generated jsonl datasets
@@ -197,6 +198,7 @@ Every module in `src/rag_tutorials/` has a corresponding test file in `tests/`:
 | `vector_store.py` | `tests/test_vector_store.py` |
 | `pipeline.py` | `tests/test_pipeline.py` |
 | `settings.py` | `tests/test_settings.py` |
+| `tracing.py` | `tests/test_tracing.py` |
 
 **Rules for tests:**
 
