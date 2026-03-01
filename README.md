@@ -15,7 +15,8 @@ and an agent extension that builds on top of the RAG foundation.
 	- agent loop (ReAct pattern)
 	- reflection and self-correction (Worker + Critic)
 	- state management (checkpoints and time travel)
-- Eight Jupyter tutorials in `tutorials/` with progressive changes from part 1 to part 8.
+	- LLM workflow tracing with OpenTelemetry and Arize Phoenix
+- Nine Jupyter tutorials in `tutorials/` with progressive changes from part 1 to part 9.
 - A common dataset and evaluation slice so differences are comparable across tutorials.
 
 ## Tutorial progression
@@ -42,6 +43,13 @@ flowchart LR
 		T6 --> T7 --> T8
 ```
 
+### Part 3: Observability (Tutorial 9)
+
+```mermaid
+flowchart LR
+		T9[Tutorial 9\nTracing with Arize Phoenix]
+```
+
 Each RAG tutorial reuses the same:
 - domain scenario (international work policy)
 - canonical handbook text source and shared query set
@@ -59,6 +67,7 @@ The agent tutorials build on top of the RAG pipeline by wrapping retrieval as an
 - **Tutorial 6 (ReAct agent):** introduces the Reason + Act loop where the agent decides when and what to retrieve.
 - **Tutorial 7 (reflection):** adds a Critic agent that reviews Worker answers and sends feedback for revision.
 - **Tutorial 8 (state management):** adds checkpoints and time travel so agent runs can be paused, inspected, and rewound.
+- **Tutorial 9 (tracing):** adds OpenTelemetry span recording and Arize Phoenix integration so every retrieval, generation, and agent step is observable.
 
 ## Prerequisites
 
@@ -105,10 +114,13 @@ uv run jupyter lab
 - `tutorials/06_react_agent.ipynb`
 - `tutorials/07_reflection_agent.ipynb`
 - `tutorials/08_state_management.ipynb`
+- `tutorials/09_tracing_with_phoenix.ipynb`
 
 `tutorials/05_rag_comparison.ipynb` runs all four RAG variants side-by-side and outputs a single benchmark table + plots.
 
 Tutorials 6-8 are the agent extension. They require Tutorials 1-5 for background on the RAG pipeline that the agent uses as a tool.
+
+Tutorial 9 (tracing) builds on top of the full pipeline (Tutorials 1-8) to add observability. It works standalone if you only want to learn tracing.
 
 ## Novice-friendly retrieval transparency
 
