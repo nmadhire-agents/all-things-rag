@@ -15,7 +15,10 @@ dependencies = [
   "matplotlib>=3.10.0",
   "seaborn>=0.13.2",
   "jupyter>=1.1.1",
-  "python-dotenv>=1.0.1"
+  "python-dotenv>=1.0.1",
+  "opentelemetry-sdk>=1.27.0",
+  "arize-phoenix>=4.0.0",
+  "openinference-instrumentation-openai>=0.1.17"
 ]
 
 [project.optional-dependencies]

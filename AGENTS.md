@@ -197,6 +197,7 @@ Every module in `src/rag_tutorials/` has a corresponding test file in `tests/`:
 | `vector_store.py` | `tests/test_vector_store.py` |
 | `pipeline.py` | `tests/test_pipeline.py` |
 | `settings.py` | `tests/test_settings.py` |
+| `tracing.py` | `tests/test_tracing.py` |
 
 **Rules for tests:**
 
